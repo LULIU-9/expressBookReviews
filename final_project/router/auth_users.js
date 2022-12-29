@@ -55,25 +55,19 @@ regd_users.put("/auth/review/:isbn", (req, res) => {
     const isbn = req.params.isbn;
     const review = req.query.review;
     const user = req.session.authorization["username"];
-    //const reviews = books[isbn]["reviews"];
-    // if (reviews[user]){
-    //     books[isbn]["reviews"][user] = review;
-    //     res.send("review updated!")
-    // } else {
-    //     books[isbn]["reviews"](
-    //        { "user" :user,
-    //         "review": review,
-    //     })
-    //books[isbn]["reviews"].push({user:review});
-    //books[isbn]["reviews"] = {user : review};
+
     books[isbn]["reviews"][user] =review;
     
-    //Object.assign(books[isbn]["reviews"],{user:review});
-        res.send(isbn + "new review added!" + user + ":" + review + books[isbn]["reviews"][user])
-    //}
-    
-  //return res.status(300).json({message: "Yet to be implemented"});
+    res.send(isbn + " new review added!" + user + ":" + review)
 });
+
+// delete book review
+regd_users.delete("/auth/review/:isbn", (req, res)=>{
+    const isbn = req.params.isbn;
+    const user = req.session.authorization["username"];
+    delete books[isbn]["reviews"][user];
+    res.send("delete success!" + books[isbn]["reviews"])
+})
 
 module.exports.authenticated = regd_users;
 module.exports.isValid = isValid;
